@@ -1,0 +1,2 @@
+/* $FreeBSD: headlibc.ldscript 258283 2013-11-17 22:52:17Z peter $ */
+GROUP ( libc.so.7 libc_nonshared.a libssp_nonshared.a )
