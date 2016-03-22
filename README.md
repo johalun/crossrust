@@ -1,8 +1,10 @@
 #How to cross compile Rust from OS X to FreeBSD
 
-######NOTES:
+##About this repository
 
-For fast version, skip to RUST and take it from there.
+This repository contain instructions on how to build a cross compiler and a set of files that I build on my El Capitan machine.
+
+If you don't want to build the necessary files yourself, clone this repository, skip to Rust section and take it from there.
 
 If you don't need a gcc cross compiler for C/C++ maybe there is a easier and faster way of making a cross toolchain for only Rust. Please let me know if you know it.
 
@@ -98,7 +100,7 @@ Link in libraries so they will be built together with gcc.
 
 
 
-##RUST
+##Rust
 Multirust install instructions: https://github.com/brson/multirust
 
 Install with  
@@ -110,7 +112,7 @@ Add files for cross compilation
 `multirust add-target nightly x86_64-unknown-freebsd`
 
 
-###CARGO
+###Cargo
 We need to configure cargo to use our new toolchain. If you cloned this repository instead of building it yourself, replace $PREFIX with the path to the repository.
 
 `echo "[target.x86_64-unknown-freebsd]" >> ~/.cargo/config`  
