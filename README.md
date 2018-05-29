@@ -1,17 +1,17 @@
 # How to cross compile Rust from OS X to FreeBSD
 
 ## About this repository
-
 This repository contain instructions on how to build a cross compiler and a set of files that I build on my El Capitan machine.
 
 If you don't want to build the necessary files yourself, clone this repository, skip to Rust section and take it from there.
 
 If you don't need a gcc cross compiler for C/C++ maybe there is a easier and faster way of making a cross toolchain for only Rust. Please let me know if you know it.
 
-## Prerequisites
 
+## Prerequisites
 A FreeBSD 11 machine (real or virtual).  
 A Mac OS X computer.  
+
 
 ## Setup
 On OS X, declare variables we need and create the folder for cross compile files.  
@@ -24,7 +24,6 @@ On OS X, declare variables we need and create the folder for cross compile files
 
 NOTE: target triple must contain version number postfix to build gcc.
 
-
 `sudo mkdir -p $PREFIX`  
 `sudo chown $USER $PREFIX`  
 `sudo mkdir -p $BUILD`  
@@ -34,6 +33,10 @@ We build our cross compiler using gcc because clang is not officially supported.
 View brew install instructions: http://brew.sh/  or install with  
 
 `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+Install wget
+
+`brew install wget`
 
 Install gcc
 
@@ -48,9 +51,9 @@ Configure make to use gcc and not Apple's clang.
 
 
 ## Make cross compiler
-Reference: http://wiki.osdev.org/GCC_Cross-Compiler   
-### Binutils
+Reference: http://wiki.osdev.org/GCC_Cross-Compiler
 
+### Binutils
 `cd $BUILD`  
 `wget http://ftp.gnu.org/gnu/binutils/binutils-2.26.tar.gz && tar xf binutil-2.26.tar.gz`  
 `makedir build-binutil && cd build-binutil`  
@@ -81,7 +84,6 @@ To later cross compile Rust programs we need a few more files.
 `rsync -avL $REMOTEUSER@$REMOTEIP:/usr/lib/libexecinfo.so lib/`  
 `rsync -avL $REMOTEUSER@$REMOTEIP:/usr/lib/librt.so lib/`  
 
-
 ### GCC
 `cd $BUILD`  
 `wget http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.4.zip && unzip mpfr-3.1.4.zip`  
@@ -99,7 +101,6 @@ Link in libraries so they will be built together with gcc.
 `make -j4 && make install`
 
 
-
 ## Rust
 Multirust install instructions: https://github.com/brson/multirust
 
@@ -111,12 +112,12 @@ Add files for cross compilation
 
 `multirust add-target nightly x86_64-unknown-freebsd`
 
-
 ### Cargo
 We need to configure cargo to use our new toolchain. If you cloned this repository instead of building it yourself, replace $PREFIX with the path to the repository.
 
 `echo "[target.x86_64-unknown-freebsd]" >> ~/.cargo/config`  
 `echo "linker = $PREFIX/bin/x86_64-unknown-freebsd11-gcc" >> ~/.cargo/config`
+
 
 ## Finally, Cross Compile
 Create new project
