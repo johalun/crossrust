@@ -1,6 +1,6 @@
-#How to cross compile Rust from OS X to FreeBSD
+# How to cross compile Rust from OS X to FreeBSD
 
-##About this repository
+## About this repository
 
 This repository contain instructions on how to build a cross compiler and a set of files that I build on my El Capitan machine.
 
@@ -8,12 +8,12 @@ If you don't want to build the necessary files yourself, clone this repository, 
 
 If you don't need a gcc cross compiler for C/C++ maybe there is a easier and faster way of making a cross toolchain for only Rust. Please let me know if you know it.
 
-##Prerequisites
+## Prerequisites
 
 A FreeBSD 11 machine (real or virtual).  
 A Mac OS X computer.  
 
-##Setup
+## Setup
 On OS X, declare variables we need and create the folder for cross compile files.  
 
 `export REMOTEUSER=myusername`  
@@ -47,9 +47,9 @@ Configure make to use gcc and not Apple's clang.
 `export LD=/usr/local/bin/gcc-5`  
 
 
-##Make cross compiler
+## Make cross compiler
 Reference: http://wiki.osdev.org/GCC_Cross-Compiler   
-###Binutils
+### Binutils
 
 `cd $BUILD`  
 `wget http://ftp.gnu.org/gnu/binutils/binutils-2.26.tar.gz && tar xf binutil-2.26.tar.gz`  
@@ -57,7 +57,7 @@ Reference: http://wiki.osdev.org/GCC_Cross-Compiler
 `../binutils-2.26/configure --prefix=$PREFIX --target=$TARGET --enable-interwork --enable-multilib --disable-nls --disable-werror`  
 `make -j4 && make install`
 
-###Copy FreeBSD files
+### Copy FreeBSD files
 There should now be a folder `$PREFIX/x86_64-unknown-freebsd11`  
 Copy files needed for compiling gcc from FreeBSD to it.  
 
@@ -82,7 +82,7 @@ To later cross compile Rust programs we need a few more files.
 `rsync -avL $REMOTEUSER@$REMOTEIP:/usr/lib/librt.so lib/`  
 
 
-###GCC
+### GCC
 `cd $BUILD`  
 `wget http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.4.zip && unzip mpfr-3.1.4.zip`  
 `wget http://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz && tar xf mpc-1.0.3.tar.gz`  
@@ -100,7 +100,7 @@ Link in libraries so they will be built together with gcc.
 
 
 
-##Rust
+## Rust
 Multirust install instructions: https://github.com/brson/multirust
 
 Install with  
@@ -112,13 +112,13 @@ Add files for cross compilation
 `multirust add-target nightly x86_64-unknown-freebsd`
 
 
-###Cargo
+### Cargo
 We need to configure cargo to use our new toolchain. If you cloned this repository instead of building it yourself, replace $PREFIX with the path to the repository.
 
 `echo "[target.x86_64-unknown-freebsd]" >> ~/.cargo/config`  
 `echo "linker = $PREFIX/bin/x86_64-unknown-freebsd11-gcc" >> ~/.cargo/config`
 
-##Finally, Cross Compile
+## Finally, Cross Compile
 Create new project
 
 `cargo new --bin helloworld`  
@@ -139,7 +139,7 @@ Check file properties with
 should return something like  
 `target/x86_64-unknown-freebsd/debug/helloworld: ELF 64-bit LSB shared object, x86-64, version 1 (FreeBSD), dynamically linked (uses shared libs), for FreeBSD 11.0 (1100097), not stripped`
 
-###Run on remote machine
+### Run on remote machine
 `scp target/x86_64-unknown-freebsd/debug/helloworld $REMOTEUSER@$REMOTEIP:/tmp/helloworld`  
 `ssh $REMOTEUSER@$REMOTEIP /tmp/helloworld`
 
