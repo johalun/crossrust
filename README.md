@@ -6,8 +6,8 @@ This repository contain a script that will download and build cross
 compile tools that can cross compile Rust from macOS to FreeBSD.  
   
 It will also cross compile a hello world crate and execute on the
-remote machine.
-
+remote machine.  
+  
 This is not meant to be a solution that works for everyone out of the
 box but hopefully it can help you get started to create your cross
 compile environment.
@@ -27,5 +27,3 @@ Change the parameters in the top of `build.sh` to suite your system
 then just type
 `./build.sh`
 in the checkout folder.
-
-
