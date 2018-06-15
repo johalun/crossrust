@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-REMOTEUSER=johannes # Remote login for root not allowed in default settings
+REMOTEUSER=${USER}  # Remote login for root not allowed in default settings
 REMOTEIP=127.0.0.1  # Remote machine is in a VirtualBox on localhost
 REMOTEPORT=2222     # VirtualBox might require port forwarding on localhost
 
